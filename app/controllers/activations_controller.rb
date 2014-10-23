@@ -7,9 +7,10 @@ class ActivationsController < ApplicationController
   before_action :check_repo_plan
 
   def create
-    if activator.activate(repo, session[:github_token])
+    if activator.activate
       JobQueue.push(OrgInvitationJob)
       analytics.track_activated(repo)
+
       render json: repo, status: :created
     else
       report_exception(
@@ -17,18 +18,23 @@ class ActivationsController < ApplicationController
         user_id: current_user.id,
         repo_id: params[:repo_id]
       )
+
       head 502
     end
   end
 
   private
 
+  def activator
+    RepoActivator.new(repo: repo, github_token: github_token)
+  end
+
   def repo
     @repo ||= current_user.repos.find(params[:repo_id])
   end
 
-  def activator
-    RepoActivator.new
+  def github_token
+    session.fetch(:github_token)
   end
 
   def check_repo_plan

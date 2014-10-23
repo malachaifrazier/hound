@@ -19,8 +19,9 @@ describe SubscriptionsController, "#create" do
         format: :json
       )
 
-      expect(activator).to have_received(:activate).
-        with(repo, AuthenticationHelper::GITHUB_TOKEN)
+      expect(activator).to have_received(:activate)
+      expect(RepoActivator).to have_received(:new).
+        with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
       expect(RepoSubscriber).to have_received(:subscribe).
         with(repo, membership.user, "cardtoken")
       expect(analytics).to have_tracked("Subscribed Private Repo").
@@ -106,8 +107,9 @@ describe SubscriptionsController, "#destroy" do
       format: :json
     )
 
-    expect(activator).to have_received(:deactivate).
-      with(repo, AuthenticationHelper::GITHUB_TOKEN)
+    expect(activator).to have_received(:deactivate)
+    expect(RepoActivator).to have_received(:new).
+      with(repo: repo, github_token: AuthenticationHelper::GITHUB_TOKEN)
     expect(RepoSubscriber).to have_received(:unsubscribe).
       with(repo, subscribed_user)
     expect(analytics).to have_tracked("Unsubscribed Private Repo").
