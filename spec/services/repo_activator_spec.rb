@@ -71,7 +71,7 @@ describe RepoActivator do
     context 'when repo activation fails' do
       it 'returns false if API request raises' do
         token = nil
-        repo = double('repo')
+        repo = create(:repo)
         expect(GithubApi).to receive(:new).and_raise(Octokit::Error.new)
 
         result = RepoActivator.new(github_token: token, repo: repo).activate
@@ -81,7 +81,7 @@ describe RepoActivator do
 
       it 'only swallows Octokit errors' do
         token = 'githubtoken'
-        repo = double('repo')
+        repo = create(:repo)
         expect(GithubApi).to receive(:new).and_raise(Exception.new)
 
         expect {
@@ -92,7 +92,7 @@ describe RepoActivator do
       context 'when Hound cannot be added to repo' do
         it 'returns false' do
           token = 'githubtoken'
-          repo = double(:repo, full_github_name: 'test/repo')
+          repo = create(:repo, full_github_name: 'test/repo')
           github = double(:github, add_user_to_repo: false)
           allow(GithubApi).to receive(:new).and_return(github)
 
@@ -104,7 +104,7 @@ describe RepoActivator do
     end
 
     context 'when the repo has invalid attributes' do
-      it 'returns false' do
+      it 'returns false when the private attribute is nil' do
         repo = create(:repo, private: nil)
         stub_github_api
         token = 'githubtoken'
@@ -112,6 +112,28 @@ describe RepoActivator do
         result = RepoActivator.new(github_token: token, repo: repo).activate
 
         expect(result).to be_falsy
+      end
+
+      it 'returns false when the private attribute is nil' do
+        repo = create(:repo, in_organization: nil)
+        stub_github_api
+        token = 'githubtoken'
+
+        result = RepoActivator.new(github_token: token, repo: repo).activate
+
+        expect(result).to be_falsy
+      end
+    end
+
+    context 'when the repo has valid attributes' do
+      it 'returns true when the private attribute is not nil' do
+        repo = create(:repo, private: false, in_organization: false)
+        stub_github_api
+        token = 'githubtoken'
+
+        result = RepoActivator.new(github_token: token, repo: repo).activate
+
+        expect(result).to be_truthy
       end
     end
 

@@ -5,13 +5,13 @@ class RepoActivator
   end
 
   def activate
-    # if repo_okay_to_activate do
+    if repo_okay_to_activate?
       change_repository_state_quietly do
-        add_hound_to_repo &&
-          create_webhook &&
-          repo.activate
+        add_hound_to_repo && create_webhook && repo.activate
       end
-    # end
+    else
+      false
+    end
   end
 
   def deactivate
@@ -24,6 +24,10 @@ class RepoActivator
   private
 
   attr_reader :github_token, :repo
+
+  def repo_okay_to_activate?
+    !repo.private.nil? && !repo.in_organization.nil?
+  end
 
   def github
     @github ||= GithubApi.new(github_token)
