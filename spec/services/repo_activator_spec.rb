@@ -103,6 +103,18 @@ describe RepoActivator do
       end
     end
 
+    context 'when the repo has invalid attributes' do
+      it 'returns false' do
+        repo = create(:repo, private: nil)
+        stub_github_api
+        token = 'githubtoken'
+
+        result = RepoActivator.new(github_token: token, repo: repo).activate
+
+        expect(result).to be_falsy
+      end
+    end
+
     context 'hook already exists' do
       it 'does not raise' do
         token = 'token'

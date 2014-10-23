@@ -5,11 +5,13 @@ class RepoActivator
   end
 
   def activate
-    change_repository_state_quietly do
-      add_hound_to_repo &&
-        create_webhook &&
-        repo.activate
-    end
+    # if repo_okay_to_activate do
+      change_repository_state_quietly do
+        add_hound_to_repo &&
+          create_webhook &&
+          repo.activate
+      end
+    # end
   end
 
   def deactivate
