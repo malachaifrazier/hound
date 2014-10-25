@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.1.3"
+ruby "2.1.2"
 
 gem "active_model_serializers"
 gem "analytics-ruby", "~> 2.0.10", require: "segment/analytics"
@@ -44,7 +44,9 @@ group :development, :test do
 end
 
 group :test do
-  gem "codeclimate-test-reporter", require: nil
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'pry-rails'
   gem "capybara", "~> 2.4.4"
   gem "capybara-webkit"
   gem "database_cleaner"

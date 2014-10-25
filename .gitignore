@@ -1,3 +1,4 @@
+*local_env.yml
 .env
 /.bundle
 /db/*.sqlite3
