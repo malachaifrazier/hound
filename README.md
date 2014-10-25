@@ -1,8 +1,8 @@
 Hound
 =====
-
-[![Build Status](https://travis-ci.org/thoughtbot/hound.svg?branch=master)](http://travis-ci.org/thoughtbot/hound?branch=master)
-[![Code Climate](https://codeclimate.com/github/thoughtbot/hound.png)](https://codeclimate.com/github/thoughtbot/hound)
+[![Build Status](https://travis-ci.org/malachaifrazier/hound.svgbranch=master)](https://travis-ci.org/malachaifrazier/hound?branch=master)
+[![Code Climate](https://codeclimate.com/github/malachaifrazier/hound/badges/gpa.svg)](https://codeclimate.com/github/malachaifrazier/hound)
+[![Dependency Status](https://gemnasium.com/malachaifrazier/hound.svg)](https://gemnasium.com/malachaifrazier/hound)
 
 Take care of pesky code reviews with a trusty [Hound](http://houndci.com).
 
